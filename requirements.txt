@@ -1,0 +1,24 @@
+# Core framework
+fastapi
+uvicorn[standard]
+
+# Database & ORM
+sqlmodel
+sqlalchemy
+alembic==1.13.1   # for migrations
+
+# Database driver (PostgreSQL recommended)
+psycopg2-binary   # if using Postgres
+
+# Data validation & utilities
+pydantic
+
+# Seeding / Demo data
+faker
+
+# Testing
+pytest
+httpx   # for API test client
+
+# Environment variables
+python-dotenv
