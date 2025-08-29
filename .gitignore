@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+__pypackages__/
+env/
+venv/
+
+.humdov-feed/
+
+.env.production
