@@ -13,6 +13,7 @@ from ...models import (
     UserListResponse,
 )
 from app.services import UserService
+from uuid import UUID
 
 router = APIRouter(prefix="/api/v1/users", tags=["Users"])
 
@@ -26,6 +27,9 @@ def create_user(
     """Create a new user"""
 
     try:
+        existing_user = UserService.get_user_by_username(db, user.username)
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Username already exists")
         db_user = UserService.create_user(db, user)
         return UserDetailResponse(
             data=db_user, success=True, message="User created successfully"
@@ -35,7 +39,7 @@ def create_user(
 
 
 @router.get("/{user_id}", response_model=UserDetailResponse)
-def get_user(user_id: int, db: Session = Depends(get_session)) -> UserDetailResponse:
+def get_user(user_id: UUID, db: Session = Depends(get_session)) -> UserDetailResponse:
     """Get a user by ID"""
     db_user = UserService.get_user_by_id(db, user_id)
     if not db_user:
@@ -57,7 +61,7 @@ def list_users(db: Session = Depends(get_session)) -> UserListResponse:
 
 @router.put("/{user_id}", response_model=UserResponse)
 def update_user(
-    user_id: int, user: UserUpdate, db: Session = Depends(get_session)
+    user_id: UUID, user: UserUpdate, db: Session = Depends(get_session)
 ) -> UserResponse:
     """Update an existing user"""
     db_user = UserService.update_user(db, user_id, user)
@@ -68,7 +72,7 @@ def update_user(
 
 
 @router.delete("/{user_id}", response_model=UserResponse)
-def delete_user(user_id: int, db: Session = Depends(get_session)) -> UserResponse:
+def delete_user(user_id: UUID, db: Session = Depends(get_session)) -> UserResponse:
     """Delete a user by ID"""
     db_user = UserService.delete_user(db, user_id)
     if not db_user:

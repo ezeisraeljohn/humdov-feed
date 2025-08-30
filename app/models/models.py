@@ -33,6 +33,7 @@ class User(UserUpdate, table=True):
 
     posts: list["Post"] = Relationship(back_populates="user")
     likes: list["Like"] = Relationship(back_populates="user")
+    comments: list["Comment"] = Relationship(back_populates="user")
 
 
 class UserResponse(SQLModel):
@@ -61,6 +62,7 @@ class UserListResponse(SQLModel):
     message: str = "Users retrieved successfully"
 
 
+### The Post Models ###
 class PostCreate(Base):
     """Schema for creating a new post"""
 
@@ -79,6 +81,8 @@ class Post(PostUpdate, table=True):
     __tablename__ = "posts"
     user: Optional["User"] = Relationship(back_populates="posts")
     likes: list["Like"] = Relationship(back_populates="post")
+    tags: list["PostTag"] = Relationship(back_populates="post")
+    comments: list["Comment"] = Relationship(back_populates="post")
 
 
 class PostResponse(SQLModel):
@@ -95,7 +99,7 @@ class PostResponse(SQLModel):
 class PostDetailResponse(SQLModel):
     """Schema for detailed post response"""
 
-    data: Post
+    data: Post | None
     success: bool = True
     message: str = "Post retrieved successfully"
 
@@ -103,11 +107,12 @@ class PostDetailResponse(SQLModel):
 class PostListResponse(SQLModel):
     """Schema for list of posts response"""
 
-    data: Optional[list[PostResponse]]
+    data: Optional[list[Post]]
     success: bool = True
     message: str = "Posts retrieved successfully"
 
 
+### The Like Model ###
 class LikeCreate(Base):
     """Schema for creating a new like"""
 
@@ -138,18 +143,26 @@ class LikeResponse(SQLModel):
     post_id: UUID
 
 
+class LikeDetailResponse(SQLModel):
+    """Schema for detailed like response"""
+
+    data: Like | None
+    success: bool = True
+    message: str = "Like retrieved successfully"
+
+
 class LikeListResponse(SQLModel):
     """Schema for list of likes response"""
 
-    data: list[LikeResponse]
+    data: list[Like]
     success: bool = True
     message: str = "Likes retrieved successfully"
 
 
+### The Tag Models ###
 class TagCreate(Base):
     """Schema for creating a new tag"""
 
-    post_id: UUID
     tag: str = Field(index=True, unique=True)
 
 
@@ -161,6 +174,7 @@ class Tag(TagUpdate, table=True):
     """SQLModel for the Tag table"""
 
     __tablename__ = "tags"
+    posts: list["PostTag"] = Relationship(back_populates="tag")
 
 
 class TagResponse(SQLModel):
@@ -172,10 +186,18 @@ class TagResponse(SQLModel):
     tag: str
 
 
+class TagDetailResponse(SQLModel):
+    """Schema for detailed tag response"""
+
+    data: Tag | None
+    success: bool = True
+    message: str = "Tag retrieved successfully"
+
+
 class TagListResponse(SQLModel):
     """Schema for list of tags response"""
 
-    data: list[TagResponse]
+    data: list[Tag]
     success: bool = True
     message: str = "Tags retrieved successfully"
 
@@ -193,3 +215,110 @@ class PostTag(PostTagUpdate, table=True):
     """SQLModel for the PostTag table"""
 
     __tablename__ = "post_tags"
+    post: Optional["Post"] = Relationship(back_populates="tags")
+    tag: Optional["Tag"] = Relationship(back_populates="posts")
+
+
+class PostTagResponse(SQLModel):
+    """Schema for post-tag relationship response"""
+
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
+    post_id: UUID
+    tag_id: UUID
+
+
+class PostTagDetailResponse(SQLModel):
+    """Schema for detailed post-tag relationship response"""
+
+    data: PostTag | None
+    success: bool = True
+    message: str = "Post-Tag relationship retrieved successfully"
+
+
+class PostTagListResponse(SQLModel):
+    """Schema for list of post-tag relationships response"""
+
+    data: list[PostTagResponse]
+    success: bool = True
+    message: str = "Post-Tag relationships retrieved successfully"
+
+
+class CommentCreate(Base):
+    """Schema for creating a new comment"""
+
+    user_id: UUID = Field(foreign_key="users.id")
+    post_id: UUID = Field(foreign_key="posts.id")
+    content: str
+
+
+class CommentUpdate(CommentCreate):
+    """Schema for updating comment information"""
+
+
+class Comment(CommentUpdate, table=True):
+    """SQLModel for the Comment table"""
+
+    __tablename__ = "comments"
+    user: Optional["User"] = Relationship(back_populates="comments")
+    post: Optional["Post"] = Relationship(back_populates="comments")
+
+
+class CommentResponse(SQLModel):
+    """Schema for comment response"""
+
+    id: UUID
+    created_at: datetime
+    updated_at: datetime
+    user_id: UUID
+    post_id: UUID
+    content: str
+
+
+class CommentDetailResponse(SQLModel):
+    """Schema for detailed comment response"""
+
+    data: Comment | None
+    success: bool = True
+    message: str = "Comment retrieved successfully"
+
+
+class CommentListResponse(SQLModel):
+    """Schema for list of comments response"""
+
+    data: list[Comment]
+    success: bool = True
+    message: str = "Comments retrieved successfully"
+
+
+### Feed Models ###
+class PaginationInfo(SQLModel):
+    """Pagination information model"""
+
+    page: int
+    page_size: int
+    total_items: int
+    total_pages: int
+    has_next: bool
+    has_previous: bool
+
+
+class FeedItemResponse(SQLModel):
+    """Schema for feed item response with ranking information"""
+
+    post: PostResponse
+    score: float
+    likes_count: int
+    comments_count: int
+    tag_matches: int
+    time_decay: float
+
+
+class FeedResponse(SQLModel):
+    """Schema for personalized feed response with pagination"""
+
+    data: list[FeedItemResponse]
+    pagination: PaginationInfo
+    success: bool = True
+    message: str = "Feed retrieved successfully"

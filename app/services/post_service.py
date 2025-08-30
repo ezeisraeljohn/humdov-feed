@@ -2,7 +2,6 @@
 
 from ..models import Post, PostCreate, PostUpdate
 from sqlmodel import Session, select
-from fastapi import HTTPException
 
 
 class PostService:
@@ -41,7 +40,7 @@ class PostService:
         return db_post
 
     @staticmethod
-    def delete_post(db: Session, post_id: int):
+    def delete_post(db: Session, post_id: int) -> Post | None:
         """Delete a post by its ID"""
         db_post = db.get(Post, post_id)
         if not db_post:
@@ -49,3 +48,9 @@ class PostService:
         db.delete(db_post)
         db.commit()
         return db_post
+
+    @staticmethod
+    def list_posts(db: Session) -> list[Post]:
+        """List all posts"""
+        posts = db.exec(select(Post)).all()
+        return [Post.model_validate(post) for post in posts]

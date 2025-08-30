@@ -1,7 +1,7 @@
 """Like service module"""
 
 from ..models import Like, LikeCreate, LikeUpdate
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 
 class LikeService:
@@ -44,3 +44,10 @@ class LikeService:
         db.delete(db_like)
         db.commit()
         return db_like
+
+    @staticmethod
+    def get_likes_by_post_id(db: Session, post_id: int) -> list[Like]:
+        """Retrieve all likes for a specific post"""
+        statement = select(Like).where(Like.post_id == post_id)
+        results = db.exec(statement)
+        return list(results.all())

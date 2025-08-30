@@ -1,12 +1,13 @@
 from ..models import User, UserCreate, UserUpdate
 from sqlmodel import select, Session
+from uuid import UUID
 
 
 class UserService:
     """Service class for user-related operations"""
 
     @staticmethod
-    def get_user_by_id(db: Session, user_id: int):
+    def get_user_by_id(db: Session, user_id: UUID):
         """Retrieve a user by their ID"""
         return db.get(User, user_id)
 
@@ -20,7 +21,7 @@ class UserService:
         return db_user
 
     @staticmethod
-    def update_user(db: Session, user_id: int, user: UserUpdate) -> User | None:
+    def update_user(db: Session, user_id: UUID, user: UserUpdate) -> User | None:
         """Update an existing user"""
         db_user = db.get(User, user_id)
         if not db_user:
@@ -34,7 +35,7 @@ class UserService:
         return db_user
 
     @staticmethod
-    def delete_user(db: Session, user_id: int):
+    def delete_user(db: Session, user_id: UUID):
         """Delete a user by their ID"""
         db_user = db.get(User, user_id)
         if not db_user:
@@ -42,3 +43,10 @@ class UserService:
         db.delete(db_user)
         db.commit()
         return db_user
+
+    @staticmethod
+    def get_user_by_username(db: Session, username: str) -> User | None:
+        """Retrieve a user by their username"""
+        statement = select(User).where(User.username == username)
+        results = db.exec(statement)
+        return results.first()

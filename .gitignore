@@ -9,3 +9,6 @@ venv/
 .humdov-feed/
 
 .env.production
+.env.development
+.env.local
+.env.test

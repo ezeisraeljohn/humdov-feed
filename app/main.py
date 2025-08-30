@@ -8,7 +8,14 @@ from app.models import User
 from app.core import settings
 from contextlib import asynccontextmanager
 import uvicorn
-from app.api.v1 import user_router, post_router
+from app.api.v1 import (
+    user_router,
+    post_router,
+    tag_router,
+    like_router,
+    comment_router,
+    feed_router,
+)
 
 
 @asynccontextmanager
@@ -38,6 +45,10 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(post_router)
+app.include_router(tag_router)
+app.include_router(like_router)
+app.include_router(comment_router)
+app.include_router(feed_router)
 
 
 @app.get("/api/v1/health")

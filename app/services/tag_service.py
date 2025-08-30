@@ -1,7 +1,7 @@
 """service to handle tag related operations"""
 
-from ..models import Tag, TagCreate, TagUpdate
-from sqlmodel import select, Session
+from ..models import Tag, TagCreate, TagUpdate, PostTag, PostTagCreate
+from sqlmodel import Session
 
 
 class TagService:
@@ -44,3 +44,12 @@ class TagService:
         db.delete(db_tag)
         db.commit()
         return db_tag
+
+    @staticmethod
+    def create_post_tag(db: Session, post_tag: PostTagCreate) -> PostTag:
+        """Create a new post-tag relationship"""
+        db_post_tag = PostTag.model_validate(post_tag)
+        db.add(db_post_tag)
+        db.commit()
+        db.refresh(db_post_tag)
+        return db_post_tag
