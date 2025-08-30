@@ -2,7 +2,7 @@
 
 A sophisticated social media feed API built with FastAPI, featuring intelligent content ranking and personalized feeds based on user engagement and interests.
 
-## 🚀 Features
+## Features
 
 - **User Management**: Create, read, update, and delete users
 - **Post Management**: Full CRUD operations for posts with rich content
@@ -236,7 +236,7 @@ The algorithm is implemented in `app/services/feed_service.py` with the followin
 - `get_post_engagement_stats()`: Aggregates likes and comments
 - `calculate_feed_score()`: Combines all factors into final ranking score
 
-## 🔗 API Endpoints
+## API Endpoints
 
 ### Authentication
 
@@ -302,14 +302,11 @@ All endpoints return consistent JSON responses:
 }
 ```
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run all tests
 pytest
-
-# Run with coverage
-pytest --cov=app
 
 # Run specific test file
 pytest tests/test_feed.py
