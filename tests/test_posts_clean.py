@@ -1,8 +1,5 @@
 """Tests for post endpoints - clean version"""
 
-import pytest
-from uuid import uuid4
-
 from app.models import Post
 
 

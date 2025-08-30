@@ -1,9 +1,6 @@
 """Tests for user endpoints - clean version"""
 
-import pytest
 from uuid import uuid4
-
-from app.models import UserCreate, UserUpdate
 
 
 class TestUserAPI:

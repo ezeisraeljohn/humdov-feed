@@ -1,8 +1,5 @@
 """Tests for post endpoints"""
 
-import pytest
-from uuid import uuid4
-
 from app.models import Post
 
 

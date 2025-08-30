@@ -182,7 +182,7 @@ class SeedService:
         for post in posts:
             db.refresh(post)
 
-        print(f"✅ Created {len(posts)} posts total")
+        print(f"Created {len(posts)} posts total")
         return posts
 
     @staticmethod
@@ -203,7 +203,7 @@ class SeedService:
                 post_tags_created += 1
 
         db.commit()
-        print(f"✅ Created {post_tags_created} post-tag relationships")
+        print(f"Created {post_tags_created} post-tag relationships")
 
     @staticmethod
     def create_likes(
@@ -237,7 +237,7 @@ class SeedService:
                 likes_created += 1
 
         db.commit()
-        print(f"✅ Created {likes_created} likes")
+        print(f"Created {likes_created} likes")
 
     @staticmethod
     def create_comments(
@@ -276,7 +276,7 @@ class SeedService:
                 comments_created += 1
 
         db.commit()
-        print(f"✅ Created {comments_created} comments")
+        print(f"Created {comments_created} comments")
 
     @staticmethod
     def seed_all(
@@ -319,8 +319,8 @@ class SeedService:
         )
 
         print("=" * 50)
-        print("🎉 Database seeding completed successfully!")
-        print(f"📊 Summary:")
+        print("Database seeding completed successfully!")
+        print(f"Summary:")
         print(f"   • Users: {len(users)}")
         print(f"   • Posts: {len(posts)}")
         print(f"   • Tags: {len(tags)}")
@@ -330,7 +330,7 @@ class SeedService:
     @staticmethod
     def clear_all_data(db: Session) -> None:
         """Clear all data from the database (for testing)"""
-        print("🗑️  Clearing all data from database...")
+        print("Clearing all data from database...")
 
         # Delete in reverse order of dependencies
         db.execute(delete(PostTag))

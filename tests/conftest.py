@@ -4,13 +4,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, SQLModel, create_engine, select
 from sqlmodel.pool import StaticPool
-from uuid import UUID
 from datetime import datetime, timedelta
 
 from app.main import app
 from app.core.session import get_session
 from app.models import User, Post, Tag, Like, Comment, PostTag
-from app.services.user_service import UserService
 from app.services.seed_service import SeedService
 
 

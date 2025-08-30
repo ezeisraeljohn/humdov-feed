@@ -1,7 +1,6 @@
 """Tests for database seeding functionality"""
 
-import pytest
-from sqlmodel import Session, select
+from sqlmodel import select
 
 from app.services.seed_service import SeedService
 from app.models import User, Post, Tag, Like, Comment, PostTag
