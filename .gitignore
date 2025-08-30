@@ -1,4 +1,4 @@
-__pycache__
+*__pycache__
 *.pyc
 *.pyo
 *.pyd
@@ -12,3 +12,5 @@ venv/
 .env.development
 .env.local
 .env.test
+
+__pycache__
