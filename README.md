@@ -1,6 +1,6 @@
 # Humdov Feed API
 
-A sophisticated social media feed API built with FastAPI, featuring intelligent content ranking and personalized feeds based on user engagement and interests.
+A social media feed API built with FastAPI, featuring intelligent content ranking and personalized feeds based on user engagement and interests.
 
 ## Features
 
