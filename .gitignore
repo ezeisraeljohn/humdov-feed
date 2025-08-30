@@ -14,3 +14,6 @@ venv/
 .env.test
 
 __pycache__
+
+Humdov-feed-Complete.postman_collection.json
+Humdov-feed.postman_collection.json

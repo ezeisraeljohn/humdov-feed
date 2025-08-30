@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import select
 from app.models import User
 from app.core import settings
+from app.core.database import init_db
 from contextlib import asynccontextmanager
 import uvicorn
 from app.api.v1 import (
@@ -22,6 +23,7 @@ from app.api.v1 import (
 async def lifespan(app: FastAPI):
 
     print("🚀 Application startup")
+    init_db()
     yield
     print("🛑 Application shutdown")
 

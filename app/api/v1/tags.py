@@ -35,7 +35,7 @@ def create_tag(tag: TagCreate, db: Session = Depends(get_session)):
 
 
 @router.get("/{tag_id}", response_model=TagDetailResponse)
-def get_tag(tag_id: int, db: Session = Depends(get_session)):
+def get_tag(tag_id: str, db: Session = Depends(get_session)):
     """Get a tag by ID"""
     db_tag = TagService.get_tag_by_id(db=db, tag_id=tag_id)
     if not db_tag:
@@ -46,12 +46,14 @@ def get_tag(tag_id: int, db: Session = Depends(get_session)):
 
 
 @router.put("/{tag_id}", response_model=TagDetailResponse)
-def update_tag(tag_id: int, tag: TagUpdate, db: Session = Depends(get_session)):
+def update_tag(tag_id: str, tag: TagUpdate, db: Session = Depends(get_session)):
     """Update a tag by ID"""
     db_tag = TagService.update_tag(db=db, tag_id=tag_id, tag=tag)
     if not db_tag:
         raise HTTPException(status_code=404, detail="Tag not found")
-    return
+    return TagDetailResponse(
+        data=db_tag, success=True, message="Tag updated successfully"
+    )
 
 
 @router.post(

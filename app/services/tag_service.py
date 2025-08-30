@@ -8,7 +8,7 @@ class TagService:
     """Service class for tag-related operations"""
 
     @staticmethod
-    def get_tag_by_id(db: Session, tag_id: int):
+    def get_tag_by_id(db: Session, tag_id: str):
         """Retrieve a tag by its ID"""
         return db.get(Tag, tag_id)
 
@@ -22,7 +22,7 @@ class TagService:
         return db_tag
 
     @staticmethod
-    def update_tag(db: Session, tag_id: int, tag: TagUpdate) -> Tag | None:
+    def update_tag(db: Session, tag_id: str, tag: TagUpdate) -> Tag | None:
         """Update an existing tag"""
         db_tag = db.get(Tag, tag_id)
         if not db_tag:
@@ -36,7 +36,7 @@ class TagService:
         return db_tag
 
     @staticmethod
-    def delete_tag(db: Session, tag_id: int):
+    def delete_tag(db: Session, tag_id: str):
         """Delete a tag by its ID"""
         db_tag = db.get(Tag, tag_id)
         if not db_tag:

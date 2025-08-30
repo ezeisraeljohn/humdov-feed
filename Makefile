@@ -1,8 +1,8 @@
 run:
-\tuvicorn app.main:app --reload
+	uvicorn app.main:app --reload
 
 seed:
-\tpython scripts/seed.py
+	python scripts/seed.py
 
 test:
-\tpytest -q
+	pytest -q
